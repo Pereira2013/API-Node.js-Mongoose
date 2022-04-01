@@ -1,7 +1,10 @@
 // config inicial
+//require('dotenv').config()
 const express = require('express') // import
-const res = require('express/lib/response')
 const app = express() // inicializa 
+const res = require('express/lib/response')
+const { default: mongoose } = require('mongoose')
+
 
 // forma de ler JSON / middlewares/ recursos executados entre as requisições e respostas
 // agora ele lê e recebe json
@@ -13,8 +16,14 @@ app.use(
 
 app.use(express.json())
 
+// rotas da API / import dp personRoutes
+
+const personRoutes = require('./routes/personRoutes')
+
+app.use('/person', personRoutes)//middlewares
 
 // rota inicial / endpoint
+// função anonima-callback
 app.get('/', (req, res) => {
 
     //mostrar req
@@ -22,5 +31,20 @@ app.get('/', (req, res) => {
 
 })
 
-// entregar uma porta
-app.listen(3000)
+
+// tratando o erro de autendicação
+const DB_USER = 'Pereira2013';
+const DB_PASSWORD = encodeURIComponent('715932') 
+
+//conect com o DB/ com promiss
+mongoose.connect(
+    `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.cfyis.mongodb.net/bancodaapi?retryWrites=true&w=majority`
+    )
+    .then(() => {
+        console.log("Conectamos ao MongoDB!")
+        // entregar uma porta
+    app.listen(3000)
+
+    })
+    .catch((err) => console.log(err))
+    
