@@ -1,5 +1,5 @@
 // config inicial
-//require('dotenv').config()
+require('dotenv').config()
 const express = require('express') // import
 const app = express() // inicializa 
 const res = require('express/lib/response')
@@ -33,8 +33,8 @@ app.get('/', (req, res) => {
 
 
 // tratando o erro de autendicação
-const DB_USER = 'Pereira2013';
-const DB_PASSWORD = encodeURIComponent('715932') 
+const DB_USER = process.env.DB_USER
+const DB_PASSWORD = encodeURIComponent(process.env.DB_PASSWORD) 
 
 //conect com o DB/ com promiss
 mongoose.connect(
